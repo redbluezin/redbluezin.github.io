@@ -1,4 +1,10 @@
 {
-  "redblue": "ruan2218",
-  "niko": "genisvaldo"
+  "redblue": { 
+    "senha": "ruan2218",
+    "vip": false, 
+    "nivel": 44},
+  "niko": { 
+    "senha": "juad",
+    "vip": true, 
+    "nivel": 100}
 }
