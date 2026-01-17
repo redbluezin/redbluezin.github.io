@@ -1,10 +1,10 @@
 {
   "redblue": { 
     "senha": "ruan2218",
-    "vip": False, 
+    "vip": false, 
     "nivel": 44},
   "niko": { 
     "senha": "juad",
-    "vip": True, 
+    "vip": true, 
     "nivel": 100}
 }
