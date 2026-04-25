@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Python Terminal (Pyodide)</title>
+  <style>
+    body {
+      background: #000;
+      color: #00ff5f;
+      font-family: monospace;
+      margin: 0;
+      padding: 10px;
+    }#terminal {
+  height: 90vh;
+  overflow-y: auto;
+  border: 1px solid #00ff5f;
+  padding: 10px;
+  white-space: pre-wrap;
+}
+
+#inputLine {
+  display: flex;
+  margin-top: 10px;
+}
+
+button {
+  background: #00ff5f;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+  </style>
+</head>
+<body><div id="terminal"></div><div id="inputLine">
+  <button onclick="execute()">Executar app.py</button>
+</div><script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script><script>
+let pyodide;
+const term = document.getElementById("terminal");
+
+function print(text) {
+  term.textContent += text + "\n";
+  term.scrollTop = term.scrollHeight;
+}
+
+async function init() {
+  print("carregando python...");
+  pyodide = await loadPyodide();
+  print("python pronto ✔\n");
+  print("clicar em executar para rodar app.py");
+}
+
+init();
+
+async function execute() {
+  if (!pyodide) {
+    print("ainda carregando...");
+    return;
+  }
+
+  print("\n--- executando app.py ---\n");
+
+  try {
+    const res = await fetch("app.py");
+    const code = await res.text();
+
+    pyodide.runPython(`
+import sys
+from io import StringIO
+sys.stdout = StringIO()
+    `);
+
+    pyodide.runPython(code);
+
+    const output = pyodide.runPython("sys.stdout.getvalue()");
+
+    print(output);
+  } catch (e) {
+    print("erro ao carregar app.py: " + e);
+  }
+}
+</script></body>
+</html>
